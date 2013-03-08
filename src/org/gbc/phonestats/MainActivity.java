@@ -41,24 +41,32 @@ public class MainActivity extends Activity {
 							
                 // Read in the input from a client
                 // Once we've read a line of input, parse it
-                BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+                BufferedReader inFromClient = new BufferedReader(
+                    new InputStreamReader(connectionSocket.getInputStream()));
                 String res = inFromClient.readLine();
 
                 // If we are getting the location
-                if(res.trim().equals("get-location")){
-                  DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+                // C# does some weird thing to the beginning of the string
+                if(res.trim().equals("get-location")
+                  || (res.length() > 0 && res.substring(1).trim().equals("get-orientation"))){
+                  DataOutputStream outToClient = 
+                      new DataOutputStream(connectionSocket.getOutputStream());
                   outToClient.writeBytes(locationHandler.getMostRecentMeasurement() + '\n');
 								
 								
                 // If we are getting the orientation
-                }else if(res.trim().equals("get-orientation") || (res.length() > 0 && res.substring(1).trim().equals("get-orientation"))){
-                  DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+                // C# does some weird thing to the beginning of the string
+                }else if(res.trim().equals("get-orientation")
+                    || (res.length() > 0 && res.substring(1).trim().equals("get-orientation"))){
+                  DataOutputStream outToClient = 
+                      new DataOutputStream(connectionSocket.getOutputStream());
                   System.out.println(orientationHandler.getMostRecentMeasurement());
                   outToClient.writeBytes(orientationHandler.getMostRecentMeasurement() + '\n');
 							  
                 // Unknown command returns empty string
                 }else{
-                  DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+                  DataOutputStream outToClient = new DataOutputStream(
+                      connectionSocket.getOutputStream());
                   outToClient.writeBytes("\n");
                 }
               }
