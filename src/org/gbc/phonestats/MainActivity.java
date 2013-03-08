@@ -48,7 +48,9 @@ public class MainActivity extends Activity {
                 // If we are getting the location
                 // C# does some weird thing to the beginning of the string
                 if(res.trim().equals("get-location")
-                  || (res.length() > 0 && res.substring(1).trim().equals("get-orientation"))){
+                  || (res.length() > 0 && res.substring(1).trim().equals("get-location"))){
+                  
+                  
                   DataOutputStream outToClient = 
                       new DataOutputStream(connectionSocket.getOutputStream());
                   outToClient.writeBytes(locationHandler.getMostRecentMeasurement() + '\n');
@@ -58,9 +60,10 @@ public class MainActivity extends Activity {
                 // C# does some weird thing to the beginning of the string
                 }else if(res.trim().equals("get-orientation")
                     || (res.length() > 0 && res.substring(1).trim().equals("get-orientation"))){
+                  
+                  
                   DataOutputStream outToClient = 
                       new DataOutputStream(connectionSocket.getOutputStream());
-                  System.out.println(orientationHandler.getMostRecentMeasurement());
                   outToClient.writeBytes(orientationHandler.getMostRecentMeasurement() + '\n');
 							  
                 // Unknown command returns empty string
